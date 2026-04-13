@@ -184,7 +184,7 @@ Begründung:
 | Betreuungszeit | 4h × 80 €/h | 320,00 € |
 | Software & Lizenzen | Open Source | 0,00 € |
 | Hardware | vorhanden | 0,00 € |
-| **Gesamtkosten einmalig** | | **1.520,00 € ** |
+| **Gesamtkosten einmalig** | | **1.520,00 €** |
 | **Laufende Kosten p.a.** | Wartung ca. 5h/Jahr | **400,00 €** |
 
 #### 2.4.3 Amortisationsrechnung
@@ -226,11 +226,11 @@ Die Eigenentwicklung amortisiert sich bereits im ersten Betriebsjahr und erzeugt
 
 ```
 Mitarbeiter          Stift & Papier         Vorgesetzter
-     │                     │                     │
+     │                      │                     │
      │── Tätigkeit ────────►│                     │
      │   aufschreiben       │                     │
      │                      │                     │
-     │── Wochenzettel ──────────────────────────►│
+     │── Wochenzettel ───────────────────────────►│
      │   abgeben            │                     │
      │                      │         manuelle    │
      │                      │         Auswertung  │
@@ -321,16 +321,16 @@ Das neue System soll folgende Verbesserungen bringen:
                  │              Tempus Memoria                  │
                  │                                              │
   ┌──────┐       │  (UC01) Einloggen                            │
-  │      │───────┼►(UC02) Ausloggen                             │
+  │      │───────┼─►(UC02) Ausloggen                            │
   │      │       │  (UC03) Zeit starten                         │
-  │ User │───────┼►(UC04) Zeit stoppen                          │
+  │ User │───────┼─►(UC04) Zeit stoppen                         │
   │      │       │  (UC05) Zeiteintrag bearbeiten               │
-  │      │───────┼►(UC06) Eigene Chronik einsehen               │
+  │      │───────┼─►(UC06) Eigene Chronik einsehen              │
   └──────┘       │  (UC07) Eigene Auswertung einsehen           │
                  │                                              │
   ┌──────┐       │  (UC08) Alle Zeiteinträge einsehen           │
-  │      │───────┼►(UC09) Benutzer verwalten (CRUD)             │
-  │Admin │───────┼►(UC10) Kategorien verwalten (CRUD)           │
+  │      │───────┼─►(UC09) Benutzer verwalten (CRUD)            │
+  │Admin │───────┼─►(UC10) Kategorien verwalten (CRUD)          │
   │      │       │  (UC11) Auswertung für alle User             │
   │      │       │  (+ alle User-Aktionen UC01–UC07)            │
   └──────┘       │                                              │
@@ -360,18 +360,18 @@ Das System folgt dem **MVC-Muster** (Model-View-Controller). Diese Architektur t
 │  (Client)   │ ◄─────────────────│                  │
 │             │   HTTP-Response   └────────┬─────────┘
 └─────────────┘                            │
-                                    ┌──────┴──────┐
-                                    │             │
-                             ┌──────▼───┐   ┌────▼──────┐
-                             │  Model   │   │   View    │
-                             │(models   │   │(templates │
+                                   ┌───────┴──────┐
+                                   │              │
+                             ┌─────▼────┐   ┌─────▼─────┐
+                             │   Model  │   │   View    │
+                             │ (models  │   │(templates │
                              │   .py)   │   │  /*.html) │
-                             └──────┬───┘   └───────────┘
-                                    │
-                             ┌──────▼──────┐
-                             │  Datenbank  │
-                             │  (SQLite)   │
-                             └─────────────┘
+                             └─────┬────┘   └───────────┘
+                                   │
+                           ┌───────▼─────┐
+                           │  Datenbank  │
+                           │  (SQLite)   │
+                           └─────────────┘
 ```
 
 ### 4.2 Technologie-Entscheidungen
@@ -390,26 +390,26 @@ Das System folgt dem **MVC-Muster** (Model-View-Controller). Diese Architektur t
 ```
 tempus-memoria/
 │
-├── run.py                    ← Einstiegspunkt, App starten
-├── seed.py                   ← Testdaten einfügen (Entwicklung)
-├── requirements.txt          ← Installierte Pakete (pip freeze)
-├── .gitignore                ← Git-Ausschlüsse (.venv, *.db)
-├── .venv/                    ← Virtuelle Umgebung (nicht in Git)
+├── run.py                     ← Einstiegspunkt, App starten
+├── seed.py                    ← Testdaten einfügen (Entwicklung)
+├── requirements.txt           ← Installierte Pakete (pip freeze)
+├── .gitignore                 ← Git-Ausschlüsse (.venv, *.db)
+├── .venv/                     ← Virtuelle Umgebung (nicht in Git)
 │
 └── app/
-    ├── __init__.py           ← Application Factory
-    ├── models.py             ← Datenbankmodelle
-    ├── routes.py             ← Routen & Controller
+    ├── __init__.py            ← Application Factory
+    ├── models.py              ← Datenbankmodelle
+    ├── routes.py              ← Routen & Controller
     │
     └── templates/
-        ├── base.html         ← Grundlayout (Navigation, Footer)
-        ├── login.html        ← Login-Formular
-        ├── dashboard.html    ← Startseite nach Login
-        ├── timer.html        ← Zeiterfassung Start/Stop
-        ├── history.html      ← Chronikansicht
-        ├── summary.html      ← Auswertungsansicht
+        ├── base.html          ← Grundlayout (Navigation, Footer)
+        ├── login.html         ← Login-Formular
+        ├── dashboard.html     ← Startseite nach Login
+        ├── timer.html         ← Zeiterfassung Start/Stop
+        ├── history.html       ← Chronikansicht
+        ├── summary.html       ← Auswertungsansicht
         └── admin/
-            ├── users.html    ← Benutzerverwaltung
+            ├── users.html     ← Benutzerverwaltung
             └── categories.html ← Kategorieverwaltung
 ```
 
@@ -510,9 +510,9 @@ tempus-memoria/
 ### 4.6 UML — Aktivitätsdiagramm: Login-Prozess
 
 ```
-              [Start]
-                 │
-                 ▼
+             [Start]
+                │
+                ▼
        ┌─────────────────┐
        │  Login-Seite    │
        │  aufrufen (GET) │
@@ -610,7 +610,7 @@ Browser        routes.py      models.py       SQLite
 │  Pass:  │                  │         │
 │         └──────────────────┘         │
 │                                      │
-│         [ Einloggen ]                │
+│            [ Einloggen ]             │
 └──────────────────────────────────────┘
 ```
 
@@ -917,17 +917,6 @@ Das System ist dann erreichbar unter `http://localhost:5001`.
 
 ---
 
-### Problem 6 — `lazy='True'` statt `lazy=True`
-
-| | |
-|---|---|
-| **Symptom** | Kein direkter Fehler, aber falsches Verhalten möglich |
-| **Ursache** | `'True'` ist ein String-Wert, `True` ist ein Boolean. SQLAlchemy erwartet einen Boolean für den `lazy`-Parameter. |
-| **Lösung** | Anführungszeichen entfernt |
-| **Lerneffekt** | `True`/`False` (großgeschrieben, ohne Anführungszeichen) sind Boolean-Werte in Python — nicht mit Strings verwechseln |
-
----
-
 ## 9. Fazit & Reflexion
 
 ### 9.1 Soll-Ist-Vergleich Zeitplanung
@@ -967,7 +956,6 @@ Das System ist dann erreichbar unter `http://localhost:5001`.
 | Vor Terminal-Befehlen immer `pwd` ausführen | Zur Routine machen |
 | venv nie verschieben | Immer neu erstellen nach Verschiebung |
 | Code nach Änderungen vollständig lesen | Review-Schritt einbauen |
-| Python-Datentypen sorgfältig unterscheiden | String vs. Boolean beachten |
 | Alten Code sofort löschen | Kein auskommentierter Code im Projekt |
 
 ### 9.5 Ausblick
