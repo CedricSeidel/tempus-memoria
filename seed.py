@@ -4,7 +4,10 @@ from app.models import User
 app = create_app()
 
 with app.app_context():
-    user = User(username="admin", password="1234", is_admin=True)
+    User.query.delete()
+    db.session.commit()
+    user = User(username="admin", is_admin=True)
+    user.set_password("Admin@12345!")
     db.session.add(user)
     db.session.commit()
     print("User erstellt!")
