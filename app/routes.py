@@ -14,4 +14,7 @@ def login():
     elif request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        return f"Du hast eingegeben: {username}"
+        user = User.query.filter_by(username=username).first()
+        if user is None:
+            return "User wurde nicht gefunden!"
+        return f"User gefunden: {username}"
