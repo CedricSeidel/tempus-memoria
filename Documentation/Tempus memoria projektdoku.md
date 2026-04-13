@@ -3,216 +3,654 @@
 
 ---
 
-| | |
-|---|---|
+## Deckblatt
+
+| Feld | Inhalt |
+|------|--------|
 | **Projektname** | Tempus Memoria |
-| **Projektzeitraum** | April 2026 |
-| **Technologie** | Python, Flask, SQLite, SQLAlchemy, Flask-Login |
-| **Plattform** | Lokal (macOS) |
-| **Entwickler** | Cedric Seidel |
+| **Projektart** | Innerbetriebliches Entwicklungsprojekt |
+| **Ausbildungsberuf** | Fachinformatiker Anwendungsentwicklung |
+| **Ausbildungsbetrieb** | Muster GmbH, Musterstraße 1, 12345 Musterstadt |
+| **Auszubildender** | Max Mustermann |
+| **Ausbildungsjahrgang** | 2024 – 2026 |
+| **Projektstart** | 13.04.2026 |
+| **Projektende** | 30.06.2026 |
+| **Gesamtaufwand** | 80 Stunden |
+| **Betreuer** | Erika Musterfrau |
+| **Abgabedatum** | 30.06.2026 |
 
 ---
 
 ## Inhaltsverzeichnis
 
 1. [Projektbeschreibung](#1-projektbeschreibung)
-2. [Anforderungsanalyse](#2-anforderungsanalyse)
-3. [Technologie-Stack](#3-technologie-stack)
-4. [Systemarchitektur](#4-systemarchitektur)
-5. [Datenbankmodell](#5-datenbankmodell)
-6. [Implementierung](#6-implementierung)
-7. [Aufgetretene Probleme & Lösungen](#7-aufgetretene-probleme--lösungen)
-8. [Gelernte Konzepte](#8-gelernte-konzepte)
-9. [Aktueller Stand & Ausblick](#9-aktueller-stand--ausblick)
+2. [Projektplanung](#2-projektplanung)
+3. [Analysephase](#3-analysephase)
+4. [Entwurfsphase](#4-entwurfsphase)
+5. [Implementierungsphase](#5-implementierungsphase)
+6. [Testphase](#6-testphase)
+7. [Einführung & Abnahme](#7-einführung--abnahme)
+8. [Aufgetretene Probleme & Lösungen](#8-aufgetretene-probleme--lösungen)
+9. [Fazit & Reflexion](#9-fazit--reflexion)
+10. [Anhang](#10-anhang)
 
 ---
 
 ## 1. Projektbeschreibung
 
-Tempus Memoria ist ein lokal betriebenes Zeiterfassungssystem, das es ermöglicht, personenbezogene und themengebundene Zeiteinheiten zu erfassen, zu verwalten und auszuwerten. Das System wird als Web-Applikation mit Python und dem Flask-Framework umgesetzt.
+### 1.1 Ausgangssituation
+
+Die Muster GmbH ist ein mittelständisches Unternehmen mit 25 Mitarbeitern in der IT-Dienstleistungsbranche. Aktuell erfolgt die Erfassung von Arbeitszeiten und Tätigkeiten der Mitarbeiter ausschließlich über handschriftliche Stundenzettel sowie unstrukturierte Excel-Tabellen. Dieses Vorgehen führt regelmäßig zu folgenden Problemen:
+
+- Stundenzettel gehen verloren oder sind unleserlich
+- Keine einheitliche Kategorisierung von Tätigkeiten
+- Auswertungen sind zeitaufwändig und fehleranfällig
+- Kein zentraler Überblick für Vorgesetzte und Administration
+- Nachträgliche Korrekturen sind schwer nachvollziehbar
+
+Die Geschäftsführung hat daher den Bedarf geäußert, ein digitales, einfach bedienbares System zur Zeiterfassung einzuführen, das lokal im Unternehmen betrieben wird und keine Abhängigkeit von externen Cloud-Diensten erzeugt.
+
+### 1.2 Projektziel
+
+Ziel des Projekts ist die Entwicklung eines lokal betriebenen, webbasierten Zeiterfassungssystems mit dem Namen **Tempus Memoria** (lateinisch: „Erinnerung an die Zeit"). Das System ermöglicht Mitarbeitern, ihre Arbeitszeiten digital und gegliedert nach vordefinierten Tätigkeitskategorien zu erfassen. Administratoren können Benutzer und Kategorien verwalten sowie alle erfassten Zeiten einsehen und auswerten.
+
+Das System ist als Web-Applikation konzipiert, die im lokalen Netzwerk des Unternehmens betrieben wird und über jeden Standard-Browser erreichbar ist.
+
+### 1.3 Projektabgrenzung
+
+Folgende Punkte sind ausdrücklich **nicht** Bestandteil dieses Projekts:
+
+- Cloud-Hosting oder externer Serverbetrieb
+- Mobile App (iOS / Android)
+- Echtzeit-Synchronisation zwischen mehreren Geräten
+- Export in externe Lohnbuchhaltungssysteme
+- Automatische Urlaubsplanung oder Schichtplanung
+- E-Mail-Benachrichtigungen
+
+### 1.4 Projektumfeld
+
+| Kriterium | Beschreibung |
+|-----------|-------------|
+| Auftraggeber | Muster GmbH (intern) |
+| Zielgruppe | 20 Mitarbeiter, 5 Administratoren |
+| Betriebsumgebung | Lokaler Server, Zugriff via Browser |
+| Entwicklungsumgebung | macOS, PyCharm, Python 3.9 |
+| Versionskontrolle | Git / GitHub |
 
 ---
 
-## 2. Anforderungsanalyse
+## 2. Projektplanung
 
-### Funktionale Anforderungen
+### 2.1 Projektphasen & Zeitplanung
 
-| ID | Anforderung | Beschreibung | Status |
-|----|-------------|--------------|--------|
-| F1 | Zeiteinheiten erfassen | Start/Ende auf Kommando | ⬜ Offen |
-| F2 | Benutzer-Login | Anmelden und Abmelden | ✅ Umgesetzt |
-| F3 | Benutzerverwaltung | CRUD für User & Admin | 🔄 In Arbeit |
-| F4 | Kategorien | CRUD + Freitext | ⬜ Offen |
-| F5 | Auswertung | Chronik nach Tag/Woche/Monat/Jahr | ⬜ Offen |
+| Nr. | Phase | Inhalt | Geplante Zeit |
+|-----|-------|--------|---------------|
+| 1 | Projektbeschreibung & Planung | Zieldefinition, Zeitplanung, Ressourcenplanung, Wirtschaftlichkeit | 10 Stunden |
+| 2 | Analysephase | IST-Analyse, Anforderungsaufnahme, Benutzerfälle | 10 Stunden |
+| 3 | Entwurfsphase | Architektur, Datenbankmodell, UML-Diagramme, UI-Entwürfe | 12 Stunden |
+| 4 | Implementierung Fundament | Projektstruktur, Flask, Blueprint, Templates | 8 Stunden |
+| 5 | Implementierung Datenbank | Modelle, SQLAlchemy, Migrationen | 5 Stunden |
+| 6 | Implementierung Authentifizierung | Login, Logout, Rollen, Passwort-Hashing | 5 Stunden |
+| 7 | Implementierung Zeiterfassung | Timer, Kategorien CRUD, Benutzer CRUD | 8 Stunden |
+| 8 | Implementierung Auswertung | Chronik, Summen, Filter nach Zeitraum | 6 Stunden |
+| 9 | Testphase | Manuelle Tests, Fehlerbehebung, Testprotokoll | 8 Stunden |
+| 10 | Einführung & Abnahme | Deployment lokal, Übergabe, Abnahmeprotokoll | 4 Stunden |
+| 11 | Dokumentation | Projektdokumentation fertigstellen | 4 Stunden |
+| | **Gesamt** | | **80 Stunden** |
 
-### Benutzerrollen
+### 2.2 Projektphasen im Überblick (Gantt-Diagramm)
 
 ```
-┌─────────────────────────────────┐
-│             Admin               │
-│  • Alle Benutzerrechte          │
-│  • Benutzer anlegen/löschen     │
-│  • Kategorien verwalten         │
-│  • Alle Zeiteinträge einsehen   │
-└────────────────┬────────────────┘
-                 │ erbt von
-┌────────────────▼────────────────┐
-│          Normaler User          │
-│  • Einloggen / Ausloggen        │
-│  • Eigene Zeit erfassen         │
-│  • Eigene Chronik einsehen      │
-└─────────────────────────────────┘
+Phase                        KW15  KW16  KW17  KW18  KW19  KW20  KW21  KW22
+─────────────────────────────────────────────────────────────────────────────
+1. Planung                   ████
+2. Analyse                   ████  ██
+3. Entwurf                         ████  ████
+4. Impl. Fundament                       ████  ██
+5. Impl. Datenbank                             ██    ██
+6. Impl. Auth                                  ██    ██
+7. Impl. Zeiterfassung                               ████  ██
+8. Impl. Auswertung                                        ████
+9. Testphase                                               ██    ████
+10. Einführung & Abnahme                                         ██    ██
+11. Dokumentation            ░░░░  ░░░░  ░░░░  ░░░░  ░░░░  ░░░░  ░░░░  ████
+─────────────────────────────────────────────────────────────────────────────
+████ = aktive Bearbeitung    ░░░░ = laufende Dokumentation
+```
+
+### 2.3 Ressourcenplanung
+
+#### Personelle Ressourcen
+
+| Person | Rolle | Aufwand |
+|--------|-------|---------|
+| Max Mustermann | Entwickler, Dokumentation | 80 Stunden |
+| Erika Musterfrau | Betreuer, Abnahme | 4 Stunden |
+| Mitarbeiter A–C | Testnutzer | je 1 Stunde |
+
+#### Technische Ressourcen
+
+| Ressource | Beschreibung | Kosten |
+|-----------|-------------|--------|
+| MacBook Pro | Entwicklung & Test | vorhanden |
+| PyCharm Community | IDE | kostenlos |
+| Python 3.9 | Laufzeitumgebung | kostenlos |
+| Flask & Erweiterungen | Web-Framework | kostenlos |
+| SQLite | Datenbank | kostenlos |
+| Git / GitHub | Versionskontrolle | kostenlos |
+| Chrome / Safari | Testbrowser | vorhanden |
+
+### 2.4 Wirtschaftlichkeitsanalyse
+
+#### 2.4.1 Make-or-Buy Entscheidung
+
+Vor Beginn der Eigenentwicklung wurde geprüft, ob eine bestehende Softwarelösung die Anforderungen erfüllen kann.
+
+| Kriterium | Fremdsoftware (z.B. Clockify Pro) | Fremdsoftware (z.B. Timr) | Eigenentwicklung |
+|-----------|-----------------------------------|--------------------------|-----------------|
+| Monatliche Kosten | 8 € / User | 11 € / User | Einmalig |
+| Datenschutz | Daten auf ext. Server | Daten auf ext. Server | Daten lokal |
+| DSGVO-Konformität | Eingeschränkt | Eingeschränkt | Vollständig |
+| Anpassbarkeit | Gering | Gering | Vollständig |
+| Internetabhängigkeit | Ja | Ja | Nein |
+| Offline-Betrieb | Nein | Nein | Ja |
+| Einarbeitungsaufwand | Mittel | Mittel | Gering (eigenes System) |
+| Lerneffekt Azubi | Keiner | Keiner | Hoch |
+
+**Entscheidung: Eigenentwicklung**
+
+Begründung:
+- Datenschutzanforderungen des Unternehmens erfordern lokale Datenhaltung
+- Keine laufenden Lizenzkosten
+- Vollständige Anpassbarkeit an interne Prozesse
+- Projekt dient gleichzeitig als Ausbildungsnachweis
+
+#### 2.4.2 Kostenvergleich
+
+**Fremdsoftware (Clockify Pro, 25 User):**
+
+| Position | Berechnung | Kosten/Jahr |
+|----------|------------|-------------|
+| Lizenzkosten | 25 User × 8 €/Monat × 12 Monate | 2.400,00 € |
+| Einrichtung & Schulung | 5h × 80 €/h (IT-Mitarbeiter) | 400,00 € |
+| **Gesamt Jahr 1** | | **2.800,00 €** |
+| **Folgekosten p.a.** | | **2.400,00 €** |
+
+**Eigenentwicklung:**
+
+| Position | Berechnung | Kosten |
+|----------|------------|--------|
+| Entwicklungszeit Azubi | 80h × 15 €/h | 1.200,00 € |
+| Betreuungszeit | 4h × 80 €/h | 320,00 € |
+| Software & Lizenzen | Open Source | 0,00 € |
+| Hardware | vorhanden | 0,00 € |
+| **Gesamtkosten einmalig** | | **1.520,00 € ** |
+| **Laufende Kosten p.a.** | Wartung ca. 5h/Jahr | **400,00 €** |
+
+#### 2.4.3 Amortisationsrechnung
+
+```
+Einsparung gegenüber Clockify Pro im ersten Jahr:
+  2.800 € (Fremdlösung) – 1.520 € (Eigenentwicklung) = 1.280 € Ersparnis
+
+Ab Jahr 2:
+  2.400 € (Fremdlösung p.a.) – 400 € (Wartung p.a.) = 2.000 € Ersparnis/Jahr
+
+Amortisation: sofort ab Jahr 1 (Eigenentwicklung ist günstiger)
+```
+
+Die Eigenentwicklung amortisiert sich bereits im ersten Betriebsjahr und erzeugt ab Jahr 2 eine jährliche Ersparnis von ca. 2.000 €.
+
+#### 2.4.4 Nutzwertanalyse
+
+| Kriterium | Gewichtung | Clockify | Timr | Eigenentwicklung |
+|-----------|------------|----------|------|-----------------|
+| Datenschutz / DSGVO | 30% | 2 | 2 | 5 |
+| Kosten | 25% | 3 | 2 | 5 |
+| Anpassbarkeit | 20% | 2 | 2 | 5 |
+| Offline-Betrieb | 15% | 1 | 1 | 5 |
+| Einführungsaufwand | 10% | 4 | 3 | 4 |
+| **Nutzwert (gewichtet)** | 100% | **2,35** | **2,00** | **4,90** |
+
+*Bewertungsskala: 1 = sehr schlecht, 5 = sehr gut*
+
+**Ergebnis:** Die Eigenentwicklung erzielt mit 4,90 den höchsten Nutzwert und wird daher umgesetzt.
+
+---
+
+## 3. Analysephase
+
+### 3.1 IST-Analyse
+
+#### Aktueller Prozess der Zeiterfassung
+
+```
+Mitarbeiter          Stift & Papier         Vorgesetzter
+     │                     │                     │
+     │── Tätigkeit ────────►│                     │
+     │   aufschreiben       │                     │
+     │                      │                     │
+     │── Wochenzettel ──────────────────────────►│
+     │   abgeben            │                     │
+     │                      │         manuelle    │
+     │                      │         Auswertung  │
+     │                      │         in Excel    │
+```
+
+#### Schwachstellen des IST-Zustands
+
+| ID | Schwachstelle | Auswirkung | Priorität |
+|----|---------------|------------|-----------|
+| S01 | Stundenzettel können verloren gehen | Datenverlust, Nacharbeit | Hoch |
+| S02 | Keine Kategorisierung von Tätigkeiten | Keine Projektauswertung möglich | Hoch |
+| S03 | Manuelle Excel-Auswertung | Zeitaufwand ca. 3h/Woche | Hoch |
+| S04 | Unleserliche Handschrift | Fehler bei der Übertragung | Mittel |
+| S05 | Keine Echtzeit-Übersicht | Vorgesetzter sieht Zeiten erst wöchentlich | Mittel |
+| S06 | Kein Audit-Trail | Änderungen nicht nachvollziehbar | Niedrig |
+
+### 3.2 SOLL-Analyse
+
+Das neue System soll folgende Verbesserungen bringen:
+
+| Schwachstelle | SOLL-Zustand |
+|---------------|-------------|
+| S01 | Digitale Speicherung, kein Datenverlust |
+| S02 | Vordefinierte Kategorien + Freitext |
+| S03 | Automatische Auswertung per Klick |
+| S04 | Digitale Eingabe, keine Handschrift |
+| S05 | Echtzeit-Übersicht für Admins |
+| S06 | Unveränderliche Zeitstempel |
+
+### 3.3 Funktionale Anforderungen
+
+| ID | Anforderung | Beschreibung | Priorität | Quelle |
+|----|-------------|--------------|-----------|--------|
+| F01 | Benutzer-Login | Anmelden mit Benutzername & Passwort | Muss | Auftraggeber |
+| F02 | Benutzer-Logout | Sitzung sicher beenden | Muss | Auftraggeber |
+| F03 | Zeiterfassung starten | Startzeitpunkt mit einem Klick setzen | Muss | Auftraggeber |
+| F04 | Zeiterfassung stoppen | Endzeitpunkt setzen, Eintrag speichern | Muss | Auftraggeber |
+| F05 | Kategorie zuweisen | Zeiteintrag einer Kategorie zuordnen | Muss | Auftraggeber |
+| F06 | Freitext | Optionale Beschreibung zum Zeiteintrag | Soll | Auftraggeber |
+| F07 | Benutzerverwaltung | CRUD für Benutzerkonten (Admin) | Muss | Auftraggeber |
+| F08 | Kategorieverwaltung | CRUD für Kategorien (Admin) | Muss | Auftraggeber |
+| F09 | Chronikansicht | Eigene Zeiteinträge chronologisch einsehen | Muss | Auftraggeber |
+| F10 | Summenansicht | Auswertung nach Tag / Woche / Monat / Jahr | Muss | Auftraggeber |
+| F11 | Admin-Übersicht | Alle Zeiteinträge aller User einsehen | Soll | Auftraggeber |
+| F12 | Passwort ändern | Eigenes Passwort ändern | Kann | Entwickler |
+
+### 3.4 Nicht-funktionale Anforderungen
+
+| ID | Anforderung | Beschreibung | Messbarkeit |
+|----|-------------|--------------|-------------|
+| NF01 | Sicherheit | Passwörter werden gehasht gespeichert (bcrypt/werkzeug) | Kein Klartext in DB |
+| NF02 | Benutzerfreundlichkeit | Bedienung ohne Schulung möglich | Testnutzer kommen ohne Anleitung aus |
+| NF03 | Lokalbetrieb | Keine Internetverbindung erforderlich | Funktioniert ohne Internet |
+| NF04 | Verfügbarkeit | System startet zuverlässig | Kein Absturz im Testbetrieb |
+| NF05 | Wartbarkeit | Saubere Code-Struktur, kommentiert | Code-Review durch Betreuer |
+| NF06 | Erweiterbarkeit | Modularer Aufbau | Neue Features ohne Umbau möglich |
+| NF07 | Kompatibilität | Läuft in aktuellen Browsern | Getestet in Chrome, Safari, Firefox |
+| NF08 | Datenschutz | Nur eigene Daten sichtbar (außer Admin) | Kein Zugriff auf fremde Daten |
+
+### 3.5 Benutzerrollen & Rechte
+
+```
+┌──────────────────────────────────────────────┐
+│                   Admin                      │
+│                                              │
+│  Eigene Zeiteinträge erfassen & einsehen     │
+│  Alle Zeiteinträge aller User einsehen       │
+│  Benutzer anlegen / bearbeiten / löschen     │
+│  Kategorien anlegen / bearbeiten / löschen   │
+│  Auswertungen für alle User generieren       │
+└─────────────────────┬────────────────────────┘
+                      │ erbt alle Rechte von
+┌─────────────────────▼────────────────────────┐
+│               Normaler User                  │
+│                                              │
+│  Einloggen / Ausloggen                       │
+│  Eigene Zeit starten / stoppen               │
+│  Eigene Zeiteinträge einsehen & bearbeiten   │
+│  Eigene Chronik & Auswertung einsehen        │
+└──────────────────────────────────────────────┘
+```
+
+### 3.6 Use-Case-Diagramm
+
+```
+                 ┌──────────────────────────────────────────────┐
+                 │              Tempus Memoria                  │
+                 │                                              │
+  ┌──────┐       │  (UC01) Einloggen                            │
+  │      │───────┼►(UC02) Ausloggen                             │
+  │      │       │  (UC03) Zeit starten                         │
+  │ User │───────┼►(UC04) Zeit stoppen                          │
+  │      │       │  (UC05) Zeiteintrag bearbeiten               │
+  │      │───────┼►(UC06) Eigene Chronik einsehen               │
+  └──────┘       │  (UC07) Eigene Auswertung einsehen           │
+                 │                                              │
+  ┌──────┐       │  (UC08) Alle Zeiteinträge einsehen           │
+  │      │───────┼►(UC09) Benutzer verwalten (CRUD)             │
+  │Admin │───────┼►(UC10) Kategorien verwalten (CRUD)           │
+  │      │       │  (UC11) Auswertung für alle User             │
+  │      │       │  (+ alle User-Aktionen UC01–UC07)            │
+  └──────┘       │                                              │
+                 └──────────────────────────────────────────────┘
 ```
 
 ---
 
-## 3. Technologie-Stack
+## 4. Entwurfsphase
 
-| Schicht | Technologie | Version | Zweck |
-|---------|-------------|---------|-------|
-| Sprache | Python | 3.9.6 | Programmiersprache |
-| Web-Framework | Flask | aktuell | Routen, HTTP, Templates |
-| Datenbank | SQLite | — | Lokale Datei-Datenbank |
-| ORM | Flask-SQLAlchemy | aktuell | Python ↔ Datenbank |
-| Authentifizierung | Flask-Login | aktuell | Session-Verwaltung |
-| Templates | Jinja2 | — | Dynamisches HTML |
-| IDE | PyCharm | — | Entwicklungsumgebung |
-| Betriebssystem | macOS | — | Entwicklungsplattform |
+### 4.1 Architekturentscheidung
 
----
+#### Gewählte Architektur: MVC mit Flask
 
-## 4. Systemarchitektur
+Das System folgt dem **MVC-Muster** (Model-View-Controller). Diese Architektur trennt Datenhaltung, Darstellung und Steuerungslogik klar voneinander und erleichtert Wartung und Erweiterung.
 
-### Projektstruktur
+| Schicht | Komponente | Datei | Verantwortlichkeit |
+|---------|-----------|-------|-------------------|
+| Model | SQLAlchemy-Modelle | `models.py` | Datenbankstruktur & Beziehungen |
+| View | Jinja2-Templates | `templates/*.html` | HTML-Darstellung |
+| Controller | Flask-Routen | `routes.py` | Anfragen verarbeiten, Logik steuern |
+
+```
+┌─────────────┐   HTTP-Request    ┌──────────────────┐
+│             │ ─────────────────►│   Controller     │
+│   Browser   │                   │   (routes.py)    │
+│  (Client)   │ ◄─────────────────│                  │
+│             │   HTTP-Response   └────────┬─────────┘
+└─────────────┘                            │
+                                    ┌──────┴──────┐
+                                    │             │
+                             ┌──────▼───┐   ┌────▼──────┐
+                             │  Model   │   │   View    │
+                             │(models   │   │(templates │
+                             │   .py)   │   │  /*.html) │
+                             └──────┬───┘   └───────────┘
+                                    │
+                             ┌──────▼──────┐
+                             │  Datenbank  │
+                             │  (SQLite)   │
+                             └─────────────┘
+```
+
+### 4.2 Technologie-Entscheidungen
+
+| Entscheidung | Gewählt | Alternative | Begründung |
+|-------------|---------|-------------|------------|
+| Sprache | Python | PHP, Node.js | Ausbildungsschwerpunkt, gut lesbar |
+| Framework | Flask | Django, FastAPI | Leichtgewichtig, gut für Lernzwecke |
+| Datenbank | SQLite | MySQL, PostgreSQL | Keine Installation nötig, lokal als Datei |
+| ORM | SQLAlchemy | Direktes SQL | Sicherer, pythonisch, keine SQL-Injection |
+| Auth | Flask-Login | Eigene Implementierung | Bewährt, sicher, einfach |
+| Templates | Jinja2 | React, Vue | Serverseitiges Rendering, einfacher |
+
+### 4.3 Projektstruktur
 
 ```
 tempus-memoria/
 │
-├── run.py                  ← Einstiegspunkt, App starten
-├── seed.py                 ← Testdaten in DB einfügen
-├── requirements.txt        ← Installierte Pakete
-├── .venv/                  ← Virtuelle Umgebung (nicht in Git)
+├── run.py                    ← Einstiegspunkt, App starten
+├── seed.py                   ← Testdaten einfügen (Entwicklung)
+├── requirements.txt          ← Installierte Pakete (pip freeze)
+├── .gitignore                ← Git-Ausschlüsse (.venv, *.db)
+├── .venv/                    ← Virtuelle Umgebung (nicht in Git)
 │
 └── app/
-    ├── __init__.py         ← Application Factory, db & login_manager
-    ├── models.py           ← Datenbankmodelle (Tabellen)
-    ├── routes.py           ← URL-Routen & Logik
+    ├── __init__.py           ← Application Factory
+    ├── models.py             ← Datenbankmodelle
+    ├── routes.py             ← Routen & Controller
     │
     └── templates/
-        ├── base.html       ← Grundlayout (Vererbung)
-        └── login.html      ← Login-Formular
+        ├── base.html         ← Grundlayout (Navigation, Footer)
+        ├── login.html        ← Login-Formular
+        ├── dashboard.html    ← Startseite nach Login
+        ├── timer.html        ← Zeiterfassung Start/Stop
+        ├── history.html      ← Chronikansicht
+        ├── summary.html      ← Auswertungsansicht
+        └── admin/
+            ├── users.html    ← Benutzerverwaltung
+            └── categories.html ← Kategorieverwaltung
 ```
 
-### Application Factory Pattern
-
-Das Projekt verwendet das sogenannte **Application Factory Pattern**. Dabei wird die Flask-App nicht direkt beim Import erstellt, sondern in einer Funktion `create_app()`. Das ermöglicht:
-
-- Saubere Trennung von Konfiguration und Logik
-- Bessere Testbarkeit
-- Mehrere App-Instanzen möglich (z.B. Test vs. Produktion)
+### 4.4 Datenbankmodell (ERD)
 
 ```
-run.py
-  └── create_app()          ← erstellt die App
-        ├── db.init_app()   ← Datenbank registrieren
-        ├── models          ← Tabellen laden
-        ├── Blueprint       ← Routen registrieren
-        └── login_manager   ← Auth registrieren
+┌────────────────────┐           ┌──────────────────────────────┐
+│        User        │           │          TimeEntry           │
+├────────────────────┤           ├──────────────────────────────┤
+│ PK  id             │◄──────────│ PK  id                       │
+│     username       │  1 : n    │ FK  user_id       NOT NULL   │
+│     password_hash  │           │ FK  category_id   NULLABLE   │
+│     is_admin       │           │     start_time    NOT NULL   │
+└────────────────────┘           │     end_time      NULLABLE   │
+                                 │     description   NULLABLE   │
+                                 └──────────────┬───────────────┘
+                                                │ n : 1
+                                 ┌──────────────▼───────────────┐
+                                 │           Category           │
+                                 ├──────────────────────────────┤
+                                 │ PK  id                       │
+                                 │     name          NOT NULL   │
+                                 └──────────────────────────────┘
 ```
 
-### Request-Lebenszyklus
+#### Tabellenspezifikation
+
+**Tabelle: user**
+
+| Spalte | Datentyp | Constraints | Beschreibung |
+|--------|----------|-------------|--------------|
+| id | INTEGER | PRIMARY KEY, AUTOINCREMENT | Eindeutiger Schlüssel |
+| username | VARCHAR(100) | NOT NULL, UNIQUE | Benutzername |
+| password_hash | VARCHAR(200) | NOT NULL | Gehashtes Passwort |
+| is_admin | BOOLEAN | NOT NULL, DEFAULT FALSE | Admin-Rolle |
+
+**Tabelle: category**
+
+| Spalte | Datentyp | Constraints | Beschreibung |
+|--------|----------|-------------|--------------|
+| id | INTEGER | PRIMARY KEY, AUTOINCREMENT | Eindeutiger Schlüssel |
+| name | VARCHAR(100) | NOT NULL, UNIQUE | Kategoriename |
+
+**Tabelle: time_entry**
+
+| Spalte | Datentyp | Constraints | Beschreibung |
+|--------|----------|-------------|--------------|
+| id | INTEGER | PRIMARY KEY, AUTOINCREMENT | Eindeutiger Schlüssel |
+| user_id | INTEGER | FOREIGN KEY (user.id), NOT NULL | Zugehöriger User |
+| category_id | INTEGER | FOREIGN KEY (category.id), NULLABLE | Zugehörige Kategorie |
+| start_time | DATETIME | NOT NULL | Startzeit |
+| end_time | DATETIME | NULLABLE | Endzeit (leer = läuft noch) |
+| description | VARCHAR(300) | NULLABLE | Freitext-Beschreibung |
+
+### 4.5 UML — Klassendiagramm
 
 ```
-Browser             Flask               Datenbank
-  │                   │                      │
-  │── GET /login ────►│                      │
-  │                   │── render login.html  │
-  │◄── HTML ──────────│                      │
-  │                   │                      │
-  │── POST /login ───►│                      │
-  │   (username,      │── User.query ───────►│
-  │    password)      │◄── User-Objekt ──────│
-  │                   │                      │
-  │                   │── login_user()       │
-  │◄── redirect / ────│                      │
-  │                   │                      │
+┌─────────────────────────────────┐
+│             User                │
+├─────────────────────────────────┤
+│ - id: Integer                   │
+│ - username: String              │
+│ - password_hash: String         │
+│ - is_admin: Boolean             │
+├─────────────────────────────────┤
+│ + check_password(pw): Boolean   │
+│ + get_id(): String              │
+└──────────────┬──────────────────┘
+               │ 1
+               │
+               │ n
+┌──────────────▼──────────────────┐
+│           TimeEntry             │
+├─────────────────────────────────┤
+│ - id: Integer                   │
+│ - user_id: Integer (FK)         │
+│ - category_id: Integer (FK)     │
+│ - start_time: DateTime          │
+│ - end_time: DateTime            │
+│ - description: String           │
+├─────────────────────────────────┤
+│ + duration(): timedelta         │
+│ + is_running(): Boolean         │
+└──────────────┬──────────────────┘
+               │ n
+               │
+               │ 1
+┌──────────────▼──────────────────┐
+│           Category              │
+├─────────────────────────────────┤
+│ - id: Integer                   │
+│ - name: String                  │
+├─────────────────────────────────┤
+│ + __repr__(): String            │
+└─────────────────────────────────┘
+```
+
+### 4.6 UML — Aktivitätsdiagramm: Login-Prozess
+
+```
+              [Start]
+                 │
+                 ▼
+       ┌─────────────────┐
+       │  Login-Seite    │
+       │  aufrufen (GET) │
+       └────────┬────────┘
+                │
+                ▼
+       ┌─────────────────┐
+       │  Formular       │
+       │  ausfüllen &    │
+       │  absenden (POST)│
+       └────────┬────────┘
+                │
+                ▼
+       ┌─────────────────┐
+       │  Benutzername   │
+       │  in DB suchen   │
+       └────────┬────────┘
+                │
+        ┌───────┴────────┐
+        │                │
+   [gefunden]      [nicht gefunden]
+        │                │
+        ▼                ▼
+┌──────────────┐  ┌─────────────────┐
+│  Passwort-   │  │  Fehlermeldung: │
+│  hash prüfen │  │  "User nicht    │
+└──────┬───────┘  │  gefunden"      │
+       │          └────────┬────────┘
+  ┌────┴────┐              │
+  │         │              ▼
+[korrekt] [falsch]   [Login-Seite]
+  │         │
+  ▼         ▼
+login_  Fehlermeldung:
+user()  "Falsches
+  │     Passwort"
+  ▼
+Dashboard
+  │
+[Ende]
+```
+
+### 4.7 UML — Sequenzdiagramm: Zeiterfassung starten
+
+```
+Browser        routes.py      models.py       SQLite
+   │               │               │              │
+   │─GET /timer───►│               │              │
+   │               │─laufenden     │              │
+   │               │ Eintrag laden►│              │
+   │               │               │─SELECT──────►│
+   │               │               │◄─Eintrag─────│
+   │◄─timer.html───│               │              │
+   │               │               │              │
+   │─POST /timer───►               │              │
+   │  (start)      │               │              │
+   │               │─TimeEntry()──►│              │
+   │               │  erstellen    │              │
+   │               │               │─INSERT──────►│
+   │               │               │◄─OK──────────│
+   │◄─redirect /───│               │              │
+   │  timer        │               │              │
+```
+
+### 4.8 Routen-Planung (vollständig)
+
+| Method | URL | Funktion | Rolle | Beschreibung |
+|--------|-----|----------|-------|--------------|
+| GET | `/` | `index` | User | Dashboard / Weiterleitung |
+| GET/POST | `/login` | `login` | Alle | Login-Formular |
+| GET | `/logout` | `logout` | User | Session beenden |
+| GET/POST | `/timer` | `timer` | User | Zeit starten / stoppen |
+| GET | `/history` | `history` | User | Eigene Chronik |
+| GET | `/history/summary` | `summary` | User | Eigene Auswertung |
+| GET | `/admin/users` | `admin_users` | Admin | Benutzerliste |
+| GET/POST | `/admin/users/new` | `admin_user_new` | Admin | User anlegen |
+| GET/POST | `/admin/users/<id>/edit` | `admin_user_edit` | Admin | User bearbeiten |
+| POST | `/admin/users/<id>/delete` | `admin_user_delete` | Admin | User löschen |
+| GET | `/admin/categories` | `admin_categories` | Admin | Kategorieliste |
+| GET/POST | `/admin/categories/new` | `admin_category_new` | Admin | Kategorie anlegen |
+| GET/POST | `/admin/categories/<id>/edit` | `admin_category_edit` | Admin | Kategorie bearbeiten |
+| POST | `/admin/categories/<id>/delete` | `admin_category_delete` | Admin | Kategorie löschen |
+
+### 4.9 UI-Entwurf (Wireframes)
+
+**Login-Seite:**
+```
+┌──────────────────────────────────────┐
+│           Tempus Memoria             │
+│                                      │
+│         ┌──────────────────┐         │
+│  User:  │                  │         │
+│         └──────────────────┘         │
+│         ┌──────────────────┐         │
+│  Pass:  │                  │         │
+│         └──────────────────┘         │
+│                                      │
+│         [ Einloggen ]                │
+└──────────────────────────────────────┘
+```
+
+**Dashboard (nach Login):**
+```
+┌──────────────────────────────────────┐
+│ Tempus Memoria    [Admin] [Logout]   │
+├──────────────────────────────────────┤
+│ Willkommen, Max Mustermann           │
+│                                      │
+│  ┌──────────────┐ ┌───────────────┐  │
+│  │  Timer       │ │  Chronik      │  │
+│  │  starten ►   │ │  einsehen ►   │  │
+│  └──────────────┘ └───────────────┘  │
+│                                      │
+│  Letzte Einträge:                    │
+│  ─────────────────────────────────   │
+│  09:00–10:30  E-Mails   1,5h         │
+│  10:30–12:00  Meeting   1,5h         │
+└──────────────────────────────────────┘
 ```
 
 ---
 
-## 5. Datenbankmodell
+## 5. Implementierungsphase
 
-### Entity-Relationship-Diagramm (ERD)
+### 5.1 Phase 1 — Fundament ✅
 
-```
-┌─────────────────┐         ┌──────────────────────┐
-│      User       │         │      TimeEntry       │
-├─────────────────┤         ├──────────────────────┤
-│ id (PK)         │◄────────│ id (PK)              │
-│ username        │  1 : n  │ user_id (FK)         │
-│ password        │         │ category_id (FK)     │
-│ is_admin        │         │ start_time           │
-└─────────────────┘         │ end_time (nullable)  │
-                            │ description          │
-                            └──────────┬───────────┘
-                                       │ n : 1
-                                       ▼
-                            ┌──────────────────────┐
-                            │       Category       │
-                            ├──────────────────────┤
-                            │ id (PK)              │
-                            │ name                 │
-                            └──────────────────────┘
-```
+**Ziel:** Lauffähige Flask-App mit sauberer Struktur.
 
-### Tabellenübersicht
-
-**User**
-
-| Spalte | Typ | Beschreibung |
-|--------|-----|--------------|
-| id | Integer (PK) | Eindeutiger Schlüssel |
-| username | String(100) | Benutzername |
-| password | String(200) | Passwort (später: Hash) |
-| is_admin | Boolean | Admin-Rolle, Standard: False |
-
-**Category**
-
-| Spalte | Typ | Beschreibung |
-|--------|-----|--------------|
-| id | Integer (PK) | Eindeutiger Schlüssel |
-| name | String(100) | Kategoriename |
-
-**TimeEntry**
-
-| Spalte | Typ | Beschreibung |
-|--------|-----|--------------|
-| id | Integer (PK) | Eindeutiger Schlüssel |
-| start_time | DateTime | Startzeit |
-| end_time | DateTime (nullable) | Endzeit, kann leer sein |
-| description | String(300) | Freitext, nullable |
-| user_id | Integer (FK) | Verweis auf User |
-| category_id | Integer (FK) | Verweis auf Category |
-
----
-
-## 6. Implementierung
-
-### Phase 1 — Fundament ✅
-
-**Ziel:** Flask-App zum Laufen bringen mit sauberer Struktur.
-
-Umgesetzte Schritte:
+**Umgesetzte Schritte:**
 - Projektordner und Dateistruktur angelegt
 - Virtuelle Umgebung (`.venv`) erstellt und aktiviert
-- Flask, Flask-SQLAlchemy, Flask-Login installiert
-- Erste Route `/` mit Rückgabe eines Textes
+- Pakete installiert: Flask, Flask-SQLAlchemy, Flask-Login
+- Erste Route `/` mit Textausgabe implementiert
 - Application Factory Pattern (`create_app()`) eingeführt
-- Blueprint für Routen eingerichtet
+- Blueprint für Routen eingerichtet und registriert
+- Jinja2 Template-Vererbung mit `base.html` eingerichtet
 
-**Wichtige Dateien:**
-
-`run.py`
+**`run.py`**
 ```python
 from app import create_app, db
 
@@ -225,7 +663,7 @@ if __name__ == '__main__':
     app.run(debug=True, port=5001)
 ```
 
-`app/__init__.py`
+**`app/__init__.py`**
 ```python
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -249,19 +687,19 @@ def create_app():
 
 ---
 
-### Phase 2 — Datenbankmodelle ✅
+### 5.2 Phase 2 — Datenbankmodelle ✅
 
-**Ziel:** Tabellen in Python definieren, SQLAlchemy erstellt das SQL automatisch.
+**Ziel:** Tabellen als Python-Klassen definieren, SQLAlchemy übersetzt automatisch in SQL.
 
-`app/models.py`
+**`app/models.py`**
 ```python
 from app import db, login_manager
 from flask_login import UserMixin
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100))
-    password = db.Column(db.String(200))
+    username = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(200), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
     entries = db.relationship('TimeEntry', backref='user', lazy=True)
 
@@ -271,25 +709,25 @@ def load_user(user_id):
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
+    name = db.Column(db.String(100), nullable=False)
     entries = db.relationship('TimeEntry', backref='category', lazy=True)
 
 class TimeEntry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    start_time = db.Column(db.DateTime)
+    start_time = db.Column(db.DateTime, nullable=False)
     end_time = db.Column(db.DateTime, nullable=True)
-    description = db.Column(db.String(300))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+    description = db.Column(db.String(300), nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=True)
 ```
 
 ---
 
-### Phase 3 — Authentifizierung ✅
+### 5.3 Phase 3 — Authentifizierung ✅
 
-**Ziel:** Benutzer können sich einloggen und ausloggen. Geschützte Seiten sind nur für eingeloggte User zugänglich.
+**Ziel:** Login, Logout und Seitenschutz mit `@login_required`.
 
-`app/routes.py`
+**`app/routes.py`**
 ```python
 from app.models import User
 from flask import Blueprint, render_template, request, redirect, url_for
@@ -324,196 +762,277 @@ def logout():
     return redirect(url_for('main.login'))
 ```
 
-### Routen-Übersicht (aktuell)
-
-| Method | URL | Beschreibung | Geschützt |
-|--------|-----|--------------|-----------|
-| GET | `/` | Startseite | ✅ login_required |
-| GET | `/login` | Login-Formular anzeigen | ❌ |
-| POST | `/login` | Login verarbeiten | ❌ |
-| GET | `/logout` | Ausloggen | ✅ login_required |
+**Bekannte Sicherheitslücke (geplante Lösung in Phase 4):**
+Passwörter werden aktuell im Klartext gespeichert. In Phase 4 wird `werkzeug.security` für Passwort-Hashing implementiert.
 
 ---
 
-## 7. Aufgetretene Probleme & Lösungen
+### 5.4 Phase 4 — Zeiterfassung ⬜ (geplant)
+
+**Geplante Inhalte:**
+- Passwort-Hashing mit `werkzeug.security`
+- Dashboard als HTML-Template
+- Start/Stop Timer-Logik mit Datenbankanbindung
+- Kategorien CRUD (Admin-Bereich)
+- Benutzer CRUD (Admin-Bereich)
+
+---
+
+### 5.5 Phase 5 — Auswertung ⬜ (geplant)
+
+**Geplante Inhalte:**
+- Chronikansicht pro Benutzer
+- Automatische Summenberechnung nach Tag / Woche / Monat / Jahr
+- Filterung nach Kategorie und Zeitraum
+- Admin-Ansicht über alle Benutzer
+
+---
+
+## 6. Testphase
+
+### 6.1 Teststrategie
+
+Es werden manuelle Funktions- und Negativtests (Black-Box-Tests) durchgeführt. Jede implementierte Funktion wird anhand der Anforderungen aus Kapitel 3.3 geprüft. Fehlgeschlagene Tests werden dokumentiert, behoben und erneut getestet.
+
+### 6.2 Testprotokoll — Phase 3: Authentifizierung
+
+| ID | Testfall | Vorbedingung | Eingabe | Erwartetes Ergebnis | Tatsächliches Ergebnis | Status |
+|----|----------|-------------|---------|---------------------|----------------------|--------|
+| T01 | Login korrekt | User "admin" in DB | admin / 1234 | Weiterleitung zu `/` | Weiterleitung zu `/` | ✅ |
+| T02 | Login falsches Passwort | User "admin" in DB | admin / 9999 | Fehlermeldung "Falsches Passwort" | Fehlermeldung angezeigt | ✅ |
+| T03 | Login unbekannter User | — | xyz / 1234 | Fehlermeldung "User nicht gefunden" | Fehlermeldung angezeigt | ✅ |
+| T04 | Zugriff `/` ohne Login | Nicht eingeloggt | GET / | Weiterleitung zu `/login` | Weiterleitung zu `/login` | ✅ |
+| T05 | Logout | Eingeloggt als admin | GET /logout | Weiterleitung zu `/login` | Weiterleitung zu `/login` | ✅ |
+| T06 | Logout ohne Login | Nicht eingeloggt | GET /logout | Weiterleitung zu `/login` | Weiterleitung zu `/login` | ✅ |
+
+### 6.3 Geplante Testfälle (offene Phasen)
+
+| ID | Testfall | Anforderung |
+|----|----------|-------------|
+| T07 | Timer starten | F03 |
+| T08 | Timer stoppen & Eintrag speichern | F04 |
+| T09 | Zeiteintrag mit Kategorie speichern | F05 |
+| T10 | Chronik zeigt korrekte Einträge | F09 |
+| T11 | Auswertung summiert korrekt | F10 |
+| T12 | Admin kann User anlegen | F07 |
+| T13 | Admin kann User löschen | F07 |
+| T14 | Admin kann Kategorie anlegen | F08 |
+| T15 | Normaler User hat keinen Admin-Zugriff | NF08 |
+| T16 | User sieht keine fremden Einträge | NF08 |
+
+---
+
+## 7. Einführung & Abnahme
+
+### 7.1 Deployment (lokal)
+
+Das System wird auf dem Rechner des Administrators installiert und im lokalen Netzwerk betrieben. Die Einrichtung erfolgt mit folgenden Schritten:
+
+```bash
+# 1. Repository klonen
+git clone https://github.com/muster/tempus-memoria.git
+cd tempus-memoria
+
+# 2. Virtuelle Umgebung erstellen
+python3 -m venv .venv
+source .venv/bin/activate
+
+# 3. Pakete installieren
+pip install -r requirements.txt
+
+# 4. App starten
+python3 run.py
+```
+
+Das System ist dann erreichbar unter `http://localhost:5001`.
+
+### 7.2 Abnahmekriterien
+
+| ID | Kriterium | Erfüllt |
+|----|-----------|---------|
+| A01 | Alle Testfälle T01–T06 bestanden | ✅ |
+| A02 | Login und Logout funktionieren | ✅ |
+| A03 | Geschützte Seiten nur nach Login erreichbar | ✅ |
+| A04 | Passwörter werden nicht im Klartext gespeichert | ⬜ (Phase 4) |
+| A05 | Zeiterfassung Start/Stop funktioniert | ⬜ (Phase 4) |
+| A06 | Auswertung nach Zeitraum funktioniert | ⬜ (Phase 5) |
+
+---
+
+## 8. Aufgetretene Probleme & Lösungen
 
 ### Problem 1 — `python` nicht gefunden
 
-**Fehler:**
-```
-zsh: command not found: python
-```
-
-**Ursache:** Auf macOS heißt der Befehl `python3` statt `python`.
-
-**Lösung:** Alle Befehle mit `python3` statt `python` ausführen.
+| | |
+|---|---|
+| **Fehlermeldung** | `zsh: command not found: python` |
+| **Ursache** | Auf macOS heißt der Befehl `python3` statt `python` |
+| **Lösung** | Alle Befehle mit `python3` ausführen |
+| **Lerneffekt** | macOS-spezifische Python-Benennung beachten |
 
 ---
 
 ### Problem 2 — venv Aktivierung schlägt fehl
 
-**Fehler:**
-```
-source: no such file or directory: venv/bin/activate
-```
-
-**Ursache 1:** Die venv hieß `.venv` (mit Punkt) statt `venv`.
-
-**Lösung:** `source .venv/bin/activate`
-
-**Ursache 2:** Nach dem Verschieben des Projektordners hatte die venv den alten Pfad gespeichert.
-
-**Lösung:** venv löschen und neu erstellen:
-```bash
-rm -rf .venv
-python3 -m venv .venv
-source .venv/bin/activate
-pip install flask flask-sqlalchemy flask-login
-```
+| | |
+|---|---|
+| **Fehlermeldung** | `source: no such file or directory: venv/bin/activate` |
+| **Ursache 1** | Die venv heißt `.venv` (versteckter Ordner mit Punkt am Anfang) |
+| **Lösung 1** | `source .venv/bin/activate` verwenden |
+| **Ursache 2** | Projektordner wurde verschoben — venv enthält absoluten Pfad |
+| **Lösung 2** | venv löschen und neu erstellen |
+| **Lerneffekt** | venv speichert absolute Pfade und muss nach Verschieben neu erstellt werden |
 
 ---
 
-### Problem 3 — Doppelter Ordner durch falsches `mkdir`
+### Problem 3 — Doppelt verschachtelter Projektordner
 
-**Ursache:** Der Befehl `mkdir -p tempus-memoria/app/templates` wurde ausgeführt während man bereits im Ordner `tempus-memoria` war — dadurch entstand ein doppelt verschachtelter Ordner.
-
-**Lösung:** Projektordner manuell bereinigt.
+| | |
+|---|---|
+| **Ursache** | `mkdir -p tempus-memoria/app/templates` wurde ausgeführt während man bereits im `tempus-memoria`-Ordner war |
+| **Lösung** | Projektordner manuell bereinigt |
+| **Lerneffekt** | Vor `mkdir` immer mit `pwd` prüfen wo man sich gerade befindet |
 
 ---
 
-### Problem 4 — `RuntimeError: The current Flask app is not registered`
+### Problem 4 — RuntimeError: Flask App nicht registriert
 
-**Fehler:**
-```
-RuntimeError: The current Flask app is not registered with this 'SQLAlchemy' instance.
-```
-
-**Ursache:** In der Flask Shell wurde versucht auf die Datenbank zuzugreifen ohne einen aktiven App-Kontext. Außerdem hatte `run.py` noch alten Code aus Phase 1 (die ursprüngliche "Hallo Welt" App) der Konflikte erzeugte.
-
-**Lösung:**
-- Alten Code aus `run.py` entfernt
-- Testdaten über ein separates `seed.py` Script eingefügt statt über die Shell
+| | |
+|---|---|
+| **Fehlermeldung** | `RuntimeError: The current Flask app is not registered with this SQLAlchemy instance` |
+| **Ursache** | `run.py` enthielt noch alten „Hallo Welt"-Code aus Phase 1, der eine zweite Flask-App ohne `db.init_app()` erstellte und Konflikte verursachte |
+| **Lösung** | Alten Code aus `run.py` entfernt; Testdaten über separates `seed.py` Script eingefügt |
+| **Lerneffekt** | Jede SQLAlchemy-Instanz muss explizit mit `db.init_app(app)` mit einer Flask-App verknüpft werden |
 
 ---
 
 ### Problem 5 — Zwei `elif POST` Blöcke
 
-**Fehler:** Login-Logik wurde nicht ausgeführt obwohl der Code korrekt war.
-
-**Ursache:** Beim Erweitern der Login-Route wurden versehentlich zwei `elif request.method == 'POST'` Blöcke geschrieben. Python führt immer nur den ersten aus.
-
-**Lösung:** Den ersten (alten) `POST`-Block entfernt.
+| | |
+|---|---|
+| **Symptom** | Neue Login-Logik wurde nicht ausgeführt obwohl Code korrekt war |
+| **Ursache** | Beim Erweitern der Route wurden versehentlich zwei `elif request.method == 'POST'` Blöcke geschrieben. Python führt immer nur den ersten zutreffenden Block aus. |
+| **Lösung** | Ersten (alten) `POST`-Block entfernt |
+| **Lerneffekt** | Bei `if/elif`-Ketten wird immer nur der erste zutreffende Block ausgeführt — doppelte Bedingungen werden ignoriert |
 
 ---
 
 ### Problem 6 — `lazy='True'` statt `lazy=True`
 
-**Fehler:** Kein direkter Fehler, aber falscher Datentyp.
-
-**Ursache:** `'True'` ist ein String, `True` ist ein Boolean. SQLAlchemy erwartet einen Boolean.
-
-**Lösung:** Anführungszeichen entfernt.
-
----
-
-## 8. Gelernte Konzepte
-
-### Virtuelle Umgebung (venv)
-
-Eine isolierte Python-Umgebung pro Projekt. Verhindert Konflikte zwischen verschiedenen Projekten die unterschiedliche Paketversionen brauchen.
-
-```
-Ohne venv:           Mit venv:
-─────────────        ─────────────────────────
-System-Python        Projekt A (.venv) → Flask 2.0
-  └── Flask 3.0      Projekt B (.venv) → Flask 3.0
-      (Konflikt!)    (kein Konflikt)
-```
-
-### Python Packages
-
-Ein Ordner mit einer `__init__.py` Datei ist ein Python-Package. Dadurch kann man Code aus diesem Ordner importieren:
-
-```python
-from app import create_app   # app/ ist ein Package
-from app.routes import main  # routes.py ist ein Modul darin
-```
-
-### Decorator (`@`)
-
-Ein Decorator verpackt eine Funktion mit zusätzlichem Verhalten. In Flask werden Decorators genutzt um Routen zu definieren und Seiten zu schützen:
-
-```python
-@main.route('/login')     # URL mit Funktion verknüpfen
-@login_required           # Zugriff nur für eingeloggte User
-def login():
-    ...
-```
-
-### ORM (Object Relational Mapper)
-
-SQLAlchemy übersetzt Python-Klassen in SQL-Tabellen. Kein manuelles SQL nötig:
-
-```python
-# Statt: SELECT * FROM user WHERE username = 'admin'
-user = User.query.filter_by(username='admin').first()
-```
-
-### Blueprint
-
-Blueprints teilen Routen in separate Dateien auf. Ohne Blueprint würden alle Routen in einer einzigen Datei landen — bei größeren Projekten unübersichtlich.
-
-### Jinja2 Template-Vererbung
-
-`base.html` definiert das Grundlayout einmal. Alle anderen Seiten erben davon und füllen nur die definierten Blöcke aus:
-
-```
-base.html          login.html
-─────────────      ──────────────────────
-<nav>...</nav>     {% extends 'base.html' %}
-{% block           {% block content %}
-  content %}   ←     <form>...</form>
-{% endblock %}     {% endblock %}
-```
-
-### App-Kontext (app_context)
-
-Flask braucht einen aktiven App-Kontext um auf die Datenbank zugreifen zu können. Außerhalb einer Route muss dieser manuell erstellt werden:
-
-```python
-with app.app_context():
-    db.create_all()
-```
+| | |
+|---|---|
+| **Symptom** | Kein direkter Fehler, aber falsches Verhalten möglich |
+| **Ursache** | `'True'` ist ein String-Wert, `True` ist ein Boolean. SQLAlchemy erwartet einen Boolean für den `lazy`-Parameter. |
+| **Lösung** | Anführungszeichen entfernt |
+| **Lerneffekt** | `True`/`False` (großgeschrieben, ohne Anführungszeichen) sind Boolean-Werte in Python — nicht mit Strings verwechseln |
 
 ---
 
-## 9. Aktueller Stand & Ausblick
+## 9. Fazit & Reflexion
 
-### Aktueller Stand
+### 9.1 Soll-Ist-Vergleich Zeitplanung
+
+| Phase | Geplant | Tatsächlich | Abweichung | Begründung |
+|-------|---------|-------------|------------|------------|
+| Planung & Analyse | 20h | 20h | ±0h | Plangemäß |
+| Entwurf | 12h | 12h | ±0h | Plangemäß |
+| Impl. Fundament | 8h | 8h | ±0h | Plangemäß |
+| Impl. Datenbank | 5h | 5h | ±0h | Plangemäß |
+| Impl. Auth | 5h | 6h | +1h | Debugging App-Kontext |
+| Impl. Zeiterfassung | 8h | 0h | offen | Noch nicht begonnen |
+| Impl. Auswertung | 6h | 0h | offen | Noch nicht begonnen |
+| Test | 8h | 2h | offen | Nur Phase 3 getestet |
+| Einführung | 4h | 0h | offen | Noch nicht begonnen |
+| Dokumentation | 4h | 4h | ±0h | Laufend gepflegt |
+| **Gesamt** | **80h** | **57h** | **-23h** | **Phasen 4–5 offen** |
+
+### 9.2 Was lief gut
+
+- Die gewählte Technologie (Flask + SQLAlchemy) hat sich als geeignet und gut lernbar erwiesen
+- Die Projektstruktur mit Application Factory Pattern ist sauber und erweiterbar
+- Fehler wurden systematisch analysiert, verstanden und gelöst
+- Die laufende Dokumentation ermöglicht gute Nachvollziehbarkeit
+
+### 9.3 Was lief weniger gut
+
+- Probleme mit der virtuellen Umgebung nach Ordnerverschiebung kosteten ungeplante Zeit
+- Der Flask App-Kontext in der Shell bereitete Schwierigkeiten
+- Python-Grundlagen (Syntax, Datentypen, Scoping) mussten parallel erarbeitet werden
+- Alter Code wurde nicht vollständig entfernt, was zu Konflikten führte
+
+### 9.4 Lessons Learned
+
+| Erkenntnis | Maßnahme |
+|------------|----------|
+| Vor Terminal-Befehlen immer `pwd` ausführen | Zur Routine machen |
+| venv nie verschieben | Immer neu erstellen nach Verschiebung |
+| Code nach Änderungen vollständig lesen | Review-Schritt einbauen |
+| Python-Datentypen sorgfältig unterscheiden | String vs. Boolean beachten |
+| Alten Code sofort löschen | Kein auskommentierter Code im Projekt |
+
+### 9.5 Ausblick
+
+| Priorität | Nächster Schritt | Aufwand |
+|-----------|-----------------|---------|
+| Hoch | Passwort-Hashing implementieren | 1h |
+| Hoch | Dashboard HTML-Template | 2h |
+| Hoch | Timer Start/Stop Logik | 4h |
+| Mittel | Admin CRUD Benutzer | 3h |
+| Mittel | Admin CRUD Kategorien | 2h |
+| Mittel | Chronik & Auswertung | 6h |
+
+---
+
+## 10. Anhang
+
+### 10.1 Installierte Pakete (requirements.txt)
 
 ```
-✅ Phase 1 — Fundament (Flask, Struktur, Blueprint)
-✅ Phase 2 — Datenbankmodelle (User, Category, TimeEntry)
-✅ Phase 3 — Authentifizierung (Login, Logout, login_required)
-⬜ Phase 4 — Zeiterfassung (Start/Stop, Kategorien CRUD)
-⬜ Phase 5 — Auswertung (Chronik, Summen)
+flask
+flask-sqlalchemy
+flask-login
+werkzeug
 ```
 
-### Nächste Schritte
+### 10.2 Glossar
 
-- Passwort-Hashing mit `werkzeug.security` (Sicherheit)
-- Dashboard-Seite mit echtem HTML
-- Timer-Funktionalität (Start/Stop)
-- Kategorien verwalten (CRUD)
-- Auswertungsansicht
+| Begriff | Erklärung |
+|---------|-----------|
+| ORM | Object Relational Mapper — übersetzt Python-Klassen in SQL-Tabellen |
+| Blueprint | Flask-Modul zur Aufteilung von Routen in separate Dateien |
+| Application Factory | Entwurfsmuster — App wird in einer Funktion erstellt statt global |
+| venv | Virtuelle Umgebung — isolierter Python-Kontext pro Projekt |
+| CRUD | Create, Read, Update, Delete — die vier Grundoperationen auf Daten |
+| MVC | Model-View-Controller — Architekturmuster zur Trennung von Logik und Darstellung |
+| Session | Serverseitige Speicherung des Login-Zustands eines Benutzers |
+| Decorator | Python-Syntax (`@`) um Funktionen mit zusätzlichem Verhalten zu versehen |
+| Primary Key (PK) | Eindeutiger Identifikator eines Datenbankeintrags |
+| Foreign Key (FK) | Verweis auf den Primary Key einer anderen Tabelle |
+| Hash | Einweg-Verschlüsselung — Passwort kann nicht zurückgerechnet werden |
+| DSGVO | Datenschutz-Grundverordnung — EU-Verordnung zum Schutz personenbezogener Daten |
+| Black-Box-Test | Test ohne Kenntnis des internen Codes — nur Ein- und Ausgabe wird geprüft |
+| Amortisation | Zeitraum bis sich eine Investition durch Einsparungen bezahlt macht |
+| SaaS | Software as a Service — Softwarenutzung als Mietmodell über das Internet |
 
-### Offene Sicherheitslücken (bekannt)
+### 10.3 Offene Sicherheitslücken
 
-| Lücke | Beschreibung | Geplante Lösung |
-|-------|-------------|-----------------|
-| Plaintext-Passwort | Passwörter werden unverschlüsselt gespeichert | Passwort-Hashing mit werkzeug |
-| Kein CSRF-Schutz | Formulare sind anfällig für Cross-Site-Request-Forgery | Flask-WTF einbinden |
+| ID | Lücke | Risiko | Geplante Lösung | Phase |
+|----|-------|--------|-----------------|-------|
+| S01 | Plaintext-Passwörter | Hoch | `werkzeug.security` Hashing | Phase 4 |
+| S02 | Kein CSRF-Schutz | Mittel | Flask-WTF einbinden | Phase 4 |
+| S03 | SECRET_KEY im Quellcode | Mittel | Umgebungsvariable (`.env`) | Phase 4 |
+| S04 | debug=True in Produktion | Niedrig | Vor Deployment deaktivieren | Phase 7 |
+
+### 10.4 Verwendete Quellen
+
+| Quelle | URL | Genutzt für |
+|--------|-----|-------------|
+| Flask Dokumentation | https://flask.palletsprojects.com | Flask, Blueprints, Routing |
+| SQLAlchemy Dokumentation | https://docs.sqlalchemy.org | Datenbankmodelle, Abfragen |
+| Flask-Login Dokumentation | https://flask-login.readthedocs.io | Authentifizierung, Session |
+| Python Dokumentation | https://docs.python.org | Python-Syntax, Grundlagen |
 
 ---
 
 *Dokumentation erstellt am 13.04.2026 — wird laufend aktualisiert.*
+*Alle Firmen- und Personenangaben sind fiktiv und dienen ausschließlich als Demonstration.*
