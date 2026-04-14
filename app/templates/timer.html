@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Zeiterfassung</h1>
+
+    {% if running %}
+        <p>Timer läuft seit: {{ running.start_time }}</p>
+        <form method="POST">
+            <button name="action" value="stop">Stop ⏹</button>
+        </form>
+    {% else %}
+        <p>Kein Timer aktiv.</p>
+        <form method="POST">
+    <select name="category_id">
+        <option value="">-- Keine Kategorie --</option>
+        {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+    </select>
+    <button name="action" value="start">Start ▶︎</button>
+</form>
+    {% endif %}
+
+{% endblock %}

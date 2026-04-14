@@ -6,9 +6,10 @@
 </head>
 <body>
     <nav>
-        <a href="/">Tempus Memoria</a>
+        <a href='/'>Tempus Memoria</a>
+        <a href='/profile'> {{ current_user.username }} </a>
+        <a href='/logout'>logout</a>
     </nav>
-
     {% block content %}
     {% endblock %}
 </body>

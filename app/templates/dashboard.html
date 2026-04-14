@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+Willkommen, {{ current_user.username }} <br>
+
+<a href="{{ url_for('main.timer') }}">Timer Starten ▶︎</a>
+
+
+<button>
+    Chronik einsehen ▶︎
+</button>
+<br>
+letzte Einträge:
+<br>
+<div>
+
+</div>
+
+{% endblock %}

@@ -693,13 +693,20 @@ def create_app():
 
 **`app/models.py`**
 ```python
-from app import db, login_manager
+from app import db
+from app import login_manager
 from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(200), nullable=False)
+    username = db.Column(db.String(100))
+    password_hash = db.Column("password", db.String(200))
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password, method="pbkdf2:sha256")
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
     is_admin = db.Column(db.Boolean, default=False)
     entries = db.relationship('TimeEntry', backref='user', lazy=True)
 
@@ -709,16 +716,16 @@ def load_user(user_id):
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
+    name = db.Column(db.String(100))
     entries = db.relationship('TimeEntry', backref='category', lazy=True)
 
 class TimeEntry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    start_time = db.Column(db.DateTime, nullable=False)
+    start_time = db.Column(db.DateTime)
     end_time = db.Column(db.DateTime, nullable=True)
-    description = db.Column(db.String(300), nullable=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=True)
+    description = db.Column(db.String(300))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
 ```
 
 ---
@@ -732,8 +739,20 @@ class TimeEntry(db.Model):
 from app.models import User
 from flask import Blueprint, render_template, request, redirect, url_for
 from flask_login import login_user, login_required, logout_user
+import re
 
 main = Blueprint('main', __name__)
+
+def validate_password(password):
+    if len(password) < 12:
+        return "Passwort muss mindestens 12 Zeichen lang sein."
+    if not re.search(r'[A-Z]', password):
+        return "Passwort muss mindestens einen Großbuchstaben enthalten."
+    if not re.search(r'[0-9]', password):
+        return "Passwort muss mindestens eine Zahl enthalten."
+    if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
+        return "Passwort muss mindestens ein Sonderzeichen enthalten."
+    return None
 
 @main.route('/')
 @login_required
@@ -750,7 +769,7 @@ def login():
         user = User.query.filter_by(username=username).first()
         if user is None:
             return "User nicht gefunden!"
-        if user.password != password:
+        if not user.check_password(password):
             return "Falsches Passwort!"
         login_user(user)
         return redirect(url_for('main.index'))
@@ -767,10 +786,26 @@ Passwörter werden aktuell im Klartext gespeichert. In Phase 4 wird `werkzeug.se
 
 ---
 
-### 5.4 Phase 4 — Zeiterfassung ⬜ (geplant)
+### 5.4 Phase 4 — Zeiterfassung  (geplant)
+**Ziel:** Passwörter Hashen damit Passwörter nicht in Klartext dargestellt werden. 
 
-**Geplante Inhalte:**
-- Passwort-Hashing mit `werkzeug.security`
+Implementiert mit:
+
+```python
+from werkzeug.security import generate_password_hash, check_password_hash
+...
+
+password_hash = db.Column("password", db.String(200))
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password, method="pbkdf2:sha256")
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+        ...
+```
+
+
+
+**Weitere Geplante Inhalte:**
 - Dashboard als HTML-Template
 - Start/Stop Timer-Logik mit Datenbankanbindung
 - Kategorien CRUD (Admin-Bereich)
@@ -778,7 +813,7 @@ Passwörter werden aktuell im Klartext gespeichert. In Phase 4 wird `werkzeug.se
 
 ---
 
-### 5.5 Phase 5 — Auswertung ⬜ (geplant)
+### 5.5 Phase 5 — Auswertung (geplant)
 
 **Geplante Inhalte:**
 - Chronikansicht pro Benutzer
